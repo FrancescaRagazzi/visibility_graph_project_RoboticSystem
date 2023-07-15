@@ -11,10 +11,14 @@ class Environment:
 
     def add_obstacle(self, obstacle):
         self.obstacles.append(obstacle)
+        return
 
     def is_valid_point(self, point):
         x, y = point
-        return 0 <= x < self.width and 0 <= y < self.height and not self.is_in_obstacle(point)
+        if (self.width > x >= 0 and self.height > y >= 0 and not self.is_in_obstacle(point)):
+            return True
+        return False
+
 
     def is_in_obstacle(self, point):
         for obstacle in self.obstacles:
