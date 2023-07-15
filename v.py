@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
         self.robot = robot
 
         self.setWindowTitle("Robot Visualization")
-        self.setGeometry(10, 10, robot.environment.width, robot.environment.height)
+        self.setGeometry(100, 100, robot.environment.width, robot.environment.height)
 
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
@@ -228,18 +228,6 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # env = Environment(10, 10)
-
-    # obstacle1 = Obstacle([(1, 2), (3, 2), (2, 4)])
-    # obstacle2 = Obstacle([(3, 4), (6, 2), (8, 3), (7, 5)])
-    # obstacle3 = Obstacle([(3, 6), (4, 8), (5, 6), (4, 5)])
-
-    # env.add_obstacle(obstacle1)
-    # env.add_obstacle(obstacle2)
-    # env.add_obstacle(obstacle3)
-
-    # robot = Robot(env, (1, 1), (9, 9))
-
     env = Environment(500, 500)
 
     obstacle1 = Obstacle([(10, 20), (30, 20), (20, 40)])
@@ -251,16 +239,6 @@ if __name__ == "__main__":
     env.add_obstacle(obstacle3)
 
     robot = Robot(env, (1, 1), (90, 90))
-
-    # obstacle1 = Obstacle([(50, 20), (150, 20), (100, 40)])
-    # obstacle2 = Obstacle([(150, 40), (300, 20), (400, 30), (350, 50)])
-    # obstacle3 = Obstacle([(150, 60), (200, 80), (250, 60), (200, 50)])
-
-    # env.add_obstacle(obstacle1)
-    # env.add_obstacle(obstacle2)
-    # env.add_obstacle(obstacle3)
-
-    # robot = Robot(env, (10, 10), (90, 450))
 
     robot.find_paths()
 
