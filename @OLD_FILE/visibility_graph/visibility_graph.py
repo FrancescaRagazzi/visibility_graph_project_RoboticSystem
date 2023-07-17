@@ -215,22 +215,22 @@ class Robot:
         plt.show()
 
 
-    def get_direction_change_points(fastest_path):
-        direction_change_points = []
-        if len(fastest_path) < 3:
-            return direction_change_points
-
-        for i in range(1, len(fastest_path) - 1):
-            x1, y1 = fastest_path[i - 1]
-            x2, y2 = fastest_path[i]
-            x3, y3 = fastest_path[i + 1]
-
-            if (x2 - x1, y2 - y1) != (x3 - x2, y3 - y2):
-                direction_change_points.append(fastest_path[i])
-
-        direction_change_points.append(robot.goal)
-
+def get_direction_change_points(fastest_path):
+    direction_change_points = []
+    if len(fastest_path) < 3:
         return direction_change_points
+
+    for i in range(1, len(fastest_path) - 1):
+        x1, y1 = fastest_path[i - 1]
+        x2, y2 = fastest_path[i]
+        x3, y3 = fastest_path[i + 1]
+
+        if (x2 - x1, y2 - y1) != (x3 - x2, y3 - y2):
+            direction_change_points.append(fastest_path[i])
+
+    direction_change_points.append(robot.goal)
+
+    return direction_change_points
 
 
 # Esempio di utilizzo
@@ -266,7 +266,7 @@ robot.find_paths()
 robot.visualize()
 
 # Ottenere i punti di cambio direzione
-direction_change_points = robot.get_direction_change_points(robot.fastest_path)
+direction_change_points = get_direction_change_points(robot.fastest_path)
 
 # Stampa dei punti di cambio direzione
 print("Punti di cambio direzione:")
