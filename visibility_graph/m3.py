@@ -32,7 +32,8 @@ class Cart2DRobot(RoboticSystem):
         self.polar_controller = Polar2DController(2.5, 2, 2.0 , 2)
         
         self.path_controller = Path2D(0.2, 0.5, 0.5, 0.01)  # tolerance 1cm
-        self.path_controller.set_path([(0.45,0.5-0.16),
+        self.path_controller.set_path([ (0.29, 0.5-0.44),
+                                        (0.45,0.5-0.16),
                                         (0.54,0.5-0.09), 
                                         (0.9, 0.5 - 0.05)])
       
