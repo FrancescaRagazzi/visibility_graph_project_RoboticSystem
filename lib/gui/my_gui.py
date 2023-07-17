@@ -34,7 +34,7 @@ class Obstacle:
 
 class MyCartWindow(QWidget):
 
-    def __init__(self, _compound_sys, _img='myy.png'):
+    def __init__(self, _compound_sys, _img='my4.png'):
         super(MyCartWindow, self).__init__()
         self.compound_system = _compound_sys
         self.image = _img
@@ -98,14 +98,14 @@ class MyCartWindow(QWidget):
         triangle = QtGui.QPolygonF()
         triangle.append(QtCore.QPointF(190, 260))  # Punto in alto a destra
         triangle.append(QtCore.QPointF(100, 350))  # Punto in basso a destra
-        triangle.append(QtCore.QPointF(200, 380))  # Punto in basso a sinistra
+        triangle.append(QtCore.QPointF(250, 400))  # Punto in basso a sinistra
 
         qp.setBrush(QtGui.QColor('#023047'))
         qp.drawPolygon(triangle)
 
         # Disegna un triangolo
         t2 = QtGui.QPolygonF()
-        t2.append(QtCore.QPointF(490, 200))
+        t2.append(QtCore.QPointF(490, 200))  #40
         t2.append(QtCore.QPointF(600, 130))
         t2.append(QtCore.QPointF(800, 300))
         t2.append(QtCore.QPointF(700, 500))
