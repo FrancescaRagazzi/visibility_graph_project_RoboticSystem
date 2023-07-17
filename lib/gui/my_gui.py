@@ -34,7 +34,7 @@ class Obstacle:
 
 class MyCartWindow(QWidget):
 
-    def __init__(self, _compound_sys, _img='mobile_robot_2d.png'):
+    def __init__(self, _compound_sys, _img='myy.png'):
         super(MyCartWindow, self).__init__()
         self.compound_system = _compound_sys
         self.image = _img
