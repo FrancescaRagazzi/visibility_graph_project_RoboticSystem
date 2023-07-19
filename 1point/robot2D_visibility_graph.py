@@ -29,11 +29,7 @@ class Cart2DRobot(RoboticSystem):
         self.linear_speed_controller = PIDSat(10, 3.5, 0, 5)  # 5 newton
         self.angular_speed_controller = PIDSat(6, 10, 0, 4)  # 4 newton * metro
         self.polar_controller = Polar2DController(2.5, 2, 2.0, 2)
-        self.path_controller = Path2D(0.1, 0.5, 0.5, 0.01)  # tolerance 1cm
-        # self.path_controller.set_path([(0.5, 0.2),
-        #                                (0.5, 0.4),
-        #                                (0.2, 0.2)])
-
+        self.path_controller = Path2D(0.1, 0.5, 0.5, 0.01)  # tolerance 0.01 cm
         self.path_controller.set_path([(0.5,0.5-0.2),(0.6,0.5-0.13), (0.9, 0.5 - 0.05)])
 
         (x, y, _) = self.get_pose()

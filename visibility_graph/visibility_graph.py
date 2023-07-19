@@ -9,51 +9,13 @@ from queue import PriorityQueue
 CURRENT_POSITION = Path(__file__).parent
 sys.path.append(f"{CURRENT_POSITION}/../")
 
-class Environment:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.obstacles = []
-
-    def add_obstacle(self, obstacle):
-        self.obstacles.append(obstacle)
-
-    def is_valid_point(self, point):
-        x, y = point
-        if 0 <= x < self.width and 0 <= y < self.height and not self.is_in_obstacle(point):
-            return True
-        return False
-
-    def is_in_obstacle(self, point):
-        for obstacle in self.obstacles:
-            if obstacle.is_inside(point):
-                return True
-        return False
+#import new classes 
+from lib.models.environment import Environment
+from lib.models.obstacle import Obstacle
+from robot2D_2wheels_visibility_graph import *
 
 
-class Obstacle:
-    def __init__(self, vertices):
-        self.vertices = vertices
-
-    def is_inside(self, point):
-        x, y = point
-        num_vertices = len(self.vertices)
-        inside = False
-        p1x, p1y = self.vertices[0]
-        for i in range(num_vertices + 1):
-            p2x, p2y = self.vertices[i % num_vertices]
-            if y > min(p1y, p2y):
-                if y <= max(p1y, p2y):
-                    if x <= max(p1x, p2x):
-                        if p1y != p2y:
-                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                        if p1x == p2x or x <= xinters:
-                            inside = not inside
-            p1x, p1y = p2x, p2y
-        return inside
-
-
-class Robot:
+class VisibilityGraph:
     def __init__(self, environment, start, goal):
         self.environment = environment
         self.start = start
@@ -233,48 +195,42 @@ def get_direction_change_points(fastest_path):
     return direction_change_points
 
 
-# Esempio di utilizzo
 env = Environment(1000, 600)
-
-# Aggiunta degli ostacoli nel grafico
-# obstacle1 = Obstacle([(190, 260), (100, 350), (200, 380)])
-# obstacle2 = Obstacle([(490, 200), (600, 130), (800, 300), (700, 500)])
-# obstacle3 = Obstacle([(30, 60), (40, 80), (50, 60), (40, 50)])
 
 obstacle1 = Obstacle([(190, 260), (100, 350), (290, 440)])  
 obstacle2 = Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)])
 obstacle3 = Obstacle([(30, 60), (40, 80), (50, 60), (40, 50)])
 
-
-# obstacles = [obstacle1, obstacle2, obstacle3]
-# constant = 60
-
-# for obstacle in obstacles:
-#     for i in range(len(obstacle.vertices)):
-#         x, y = obstacle.vertices[i]
-#         x += constant
-#         y += constant
-#         obstacle.vertices[i] = (x, y)
-
-
 env.add_obstacle(obstacle1)
 env.add_obstacle(obstacle2)
 env.add_obstacle(obstacle3)
 
-robot = Robot(env, (100, 500), (900, 50))
+robot = VisibilityGraph(env, (100, 500), (900, 50))
 robot.find_paths()
-robot.visualize()
 
-# Ottenere i punti di cambio direzione
+
 direction_change_points = get_direction_change_points(robot.fastest_path)
 
-# Stampa dei punti di cambio direzione
 print("Punti di cambio direzione:")
 for point in direction_change_points:
     print(point)
 
 
 
-# (100, 350)
-# (200, 200)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+
+    # Visualizza il grafico del robot prima dell'avvio dell'app
+    robot.visualize()
+
+    # Crea e avvia l'app
+    cart_robot = Cart2DRobot(direction_change_points)
+    ex = MyCartWindow(cart_robot)
+    sys.exit(app.exec_())
+
+    
+# (290, 440)
+# (450, 160)
+# (540, 90)
 # (900, 50)

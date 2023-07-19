@@ -14,12 +14,16 @@ from lib.gui.my_gui import MyCartWindow
 from lib.data.plot import DataPlotter
 from lib.models.cart2d import TwoWheelsCart2DEncodersOdometry
 
+#import new classes 
+from lib.models.environment import Environment
+from lib.models.obstacle import Obstacle
+
 from PyQt5.QtWidgets import QApplication
 
 
 class Cart2DRobot(RoboticSystem):
 
-    def __init__(self):
+    def __init__(self, path):
 
         super().__init__(1e-3) # delta_t = 1e-3
         self.cart = TwoWheelsCart2DEncodersOdometry(20, 0.15, 0.8, 0.8,
@@ -31,16 +35,33 @@ class Cart2DRobot(RoboticSystem):
 
         self.polar_controller = Polar2DController(2.5, 2, 2.0 , 2)
         
-        self.path_controller = Path2D(0.2, 0.5, 0.5, 0.01)  # tolerance 1cm
-        self.path_controller.set_path([ (0.29, 0.5-0.44),
-                                        (0.45,0.5-0.16),
-                                        (0.54,0.5-0.09), 
-                                        (0.9, 0.5 - 0.05)])
+        self.path_controller = Path2D(0.2, 0.5, 0.5, 0.01)  # _vmax, _acc, _dec, _threshold
+        converted_path = []
+        for point in path:
+            x, y = point
+            converted_x = x / 1000
+            converted_y = 0.5 - (y / 1000)
+            converted_point = (converted_x, converted_y)
+            converted_path.append(converted_point)
+            print(converted_point)
+
+        self.path_controller.set_path(converted_path)
+
+    
+        # self.path_controller.set_path([ (0.29, 0.5-0.44),
+        #                                 (0.45,0.5-0.16),
+        #                                 (0.54,0.5-0.09), 
+        #                                 (0.9, 0.5 - 0.05)])
       
         (x, y, _) = self.get_pose()
         self.path_controller.start((x, y)) # avviamo il path a partire dalla posizione corrente del robot
         
         self.plotter = DataPlotter()
+
+        
+    
+        
+
 
     def run(self):
         pose = self.get_pose()
@@ -81,10 +102,10 @@ class Cart2DRobot(RoboticSystem):
         return self.cart.v, self.cart.w
 
 
+xpath = [(290, 440),
+        (450, 160),
+        (540, 90),
+        (900, 50)]
 
 
-if __name__ == '__main__':
-    cart_robot = Cart2DRobot()
-    app = QApplication(sys.argv)
-    ex = MyCartWindow(cart_robot)
-    sys.exit(app.exec_())
+
