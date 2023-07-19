@@ -202,7 +202,7 @@ env = Environment(1000, 600)
 obstacles = [
     Obstacle([(190, 260), (100, 350), (290, 440)]),
     Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)]),
-    Obstacle([(30, 60), (40, 80), (50, 60), (40, 50)])
+    Obstacle([(700,50), (770,100), (800,20)])
 ]
 
 
@@ -227,7 +227,6 @@ for obstacle in obstacles:
     scaled_obstacles.append(obstacle.scale(scale_factor))
 
 
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
@@ -241,11 +240,6 @@ if __name__ == '__main__':
 
     sys.exit(app.exec_())
 
-
-# (290, 440)
-# (450, 160)
-# (540, 90)
-# (900, 50)7
 
 
 
