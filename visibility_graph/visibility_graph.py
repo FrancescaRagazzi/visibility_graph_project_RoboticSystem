@@ -14,6 +14,8 @@ from lib.models.environment import Environment
 from lib.models.obstacle import Obstacle
 from robot2D_2wheels_visibility_graph import *
 
+from lib.models.obstacle import scale_polygon
+
 
 class VisibilityGraph:
     def __init__(self, environment, start, goal):
@@ -197,13 +199,15 @@ def get_direction_change_points(fastest_path):
 
 env = Environment(1000, 600)
 
-obstacle1 = Obstacle([(190, 260), (100, 350), (290, 440)])  
-obstacle2 = Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)])
-obstacle3 = Obstacle([(30, 60), (40, 80), (50, 60), (40, 50)])
+obstacles = [
+    Obstacle([(190, 260), (100, 350), (290, 440)]),
+    Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)]),
+    Obstacle([(30, 60), (40, 80), (50, 60), (40, 50)])
+]
 
-env.add_obstacle(obstacle1)
-env.add_obstacle(obstacle2)
-env.add_obstacle(obstacle3)
+
+for obstacle in obstacles:
+    env.add_obstacle(obstacle)
 
 robot = VisibilityGraph(env, (100, 500), (900, 50))
 robot.find_paths()
@@ -217,22 +221,23 @@ for point in direction_change_points:
 
 
 
+scale_factor = 0.8
+scaled_obstacles = []
+for obstacle in obstacles:
+    scaled_obstacles.append(obstacle.scale(scale_factor))
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Visualizza il grafico del robot prima dell'avvio dell'app
-   # robot.visualize()
+    robot.visualize()
 
     # Crea e avvia l'app
     cart_robot = Cart2DRobot(direction_change_points)
     ex = MyCartWindow(cart_robot)
-    obstacles = [
-        [(190, 260), (100, 350), (250, 400)],  
-        [(490, 200), (600, 130), (800, 300), (700, 500)],
-        [(30, 60), (40, 80), (50, 60), (40, 50)]
-    ]
-    ex.set_obstacles(obstacles)
+    ex.set_obstacles(scaled_obstacles)
 
     sys.exit(app.exec_())
 

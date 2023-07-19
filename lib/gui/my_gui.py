@@ -38,7 +38,7 @@ class MyCartWindow(QWidget):
         super(MyCartWindow, self).__init__()
         self.compound_system = _compound_sys
         self.image = _img
-        self.obstacles=None
+        self.obstacles=[]
         self.initUI()
         
 
@@ -81,7 +81,8 @@ class MyCartWindow(QWidget):
         if self.obstacles is not None:
             for obstacle in self.obstacles:
                 p = QtGui.QPolygonF()
-                for point in obstacle:
+                points = obstacle.get_vertices()
+                for point in points:
                     p.append(QtCore.QPointF(point[0], point[1]))
                 self.obstacles_polygons.append(p)
 
@@ -171,4 +172,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

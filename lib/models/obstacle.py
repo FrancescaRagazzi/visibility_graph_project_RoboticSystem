@@ -1,6 +1,13 @@
 class Obstacle:
     def __init__(self, vertices):
         self.vertices = vertices
+    
+    def get_vertices(self):
+        return self.vertices
+    
+    def scale(self, scale_factor):
+        scaled_vertices = scale_polygon(self.vertices, scale_factor)
+        return Obstacle(scaled_vertices)
 
     def is_inside(self, point):
         x, y = point
@@ -19,3 +26,18 @@ class Obstacle:
             p1x, p1y = p2x, p2y
         return inside
 
+def scale_polygon(vertices, scale_factor):
+    # Trova il centro del poligono originale
+    center_x = sum(x for x, _ in vertices) / len(vertices)
+    center_y = sum(y for _, y in vertices) / len(vertices)
+
+    # Trasla il poligono in modo che il centro sia all'origine (0, 0)
+    translated_vertices = [(x - center_x, y - center_y) for x, y in vertices]
+
+    # Applica il fattore di scala ai vertici del poligono traslato
+    scaled_vertices = [(x * scale_factor, y * scale_factor) for x, y in translated_vertices]
+
+    # Trasla nuovamente il poligono scalato al centro originale
+    scaled_vertices = [(x + center_x, y + center_y) for x, y in scaled_vertices]
+
+    return scaled_vertices
