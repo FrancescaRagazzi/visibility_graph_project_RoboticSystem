@@ -5,9 +5,31 @@ import pathlib
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication
+
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap
 
+
+class Obstacle:
+    def __init__(self, vertices):
+        self.vertices = vertices
+
+    def is_inside(self, point):
+        x, y = point
+        num_vertices = len(self.vertices)
+        inside = False
+        p1x, p1y = self.vertices[0]
+        for i in range(num_vertices + 1):
+            p2x, p2y = self.vertices[i % num_vertices]
+            if y > min(p1y, p2y):
+                if y <= max(p1y, p2y):
+                    if x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        if p1x == p2x or x <= xinters:
+                            inside = not inside
+            p1x, p1y = p2x, p2y
+        return inside
 
 
 class MyCartWindow(QWidget):
@@ -16,7 +38,9 @@ class MyCartWindow(QWidget):
         super(MyCartWindow, self).__init__()
         self.compound_system = _compound_sys
         self.image = _img
+        self.obstacles=None
         self.initUI()
+        
 
     def initUI(self):
         layout = QVBoxLayout(self)
@@ -26,9 +50,12 @@ class MyCartWindow(QWidget):
 
         # Crea un QLabel per visualizzare l'immagine
         label = QLabel(self)
+        label.setPixmap(pixmap)  # Imposta la pixmap nel QLabel
 
         # Aggiungi il QLabel al layout
         layout.addWidget(label)
+
+        self.setLayout(layout)
 
         self.setLayout(layout)
 
@@ -46,6 +73,18 @@ class MyCartWindow(QWidget):
         self._timer_painter = QtCore.QTimer(self)
         self._timer_painter.start(int(self.delta_t * 1000))
         self._timer_painter.timeout.connect(self.go)
+
+    def set_obstacles(self, obstacles):
+        self.obstacles = obstacles
+        self.obstacles_polygons = []  # Converti gli ostacoli in QPolygonF
+
+        if self.obstacles is not None:
+            for obstacle in self.obstacles:
+                p = QtGui.QPolygonF()
+                for point in obstacle:
+                    p.append(QtCore.QPointF(point[0], point[1]))
+                self.obstacles_polygons.append(p)
+
 
     def go(self):
         if not (self.compound_system.step()):
@@ -68,33 +107,47 @@ class MyCartWindow(QWidget):
         qp.drawText(910, 60, "Th = %6.3f deg" % (math.degrees(theta)))
         qp.drawText(910, 80, "T  = %6.3f s" % (self.compound_system.t))
 
-        #Disegno gli ostacoli
-        p1 = QtGui.QPolygonF()
-        p1.append(QtCore.QPointF(190, 260))  
-        p1.append(QtCore.QPointF(100, 350))  
-        p1.append(QtCore.QPointF(250, 400))  
+        # Disegno degli ostacoli
         qp.setBrush(QtGui.QColor('#023047'))
-        qp.drawPolygon(p1)
+        for polygon in self.obstacles_polygons:
+            qp.drawPolygon(polygon)
+
+        # if self.obstacles is not None:
+        #     for obstacle in self.obstacles:
+        #         p = QtGui.QPolygonF()
+        #         for point in obstacle:
+        #             p.append(QtCore.QPointF(point[0], point[1]))
+        #         qp.setBrush(QtGui.QColor('#023047'))
+        #         qp.drawPolygon(p)
 
 
-        p2 = QtGui.QPolygonF()
-        p2.append(QtCore.QPointF(490, 200))  
-        p2.append(QtCore.QPointF(600, 130))
-        p2.append(QtCore.QPointF(800, 300))
-        p2.append(QtCore.QPointF(700, 500))
+        # #Disegno gli ostacoli
+        # p1 = QtGui.QPolygonF()
+        # p1.append(QtCore.QPointF(190, 260))  
+        # p1.append(QtCore.QPointF(100, 350))  
+        # p1.append(QtCore.QPointF(250, 400))  
+        # qp.setBrush(QtGui.QColor('#023047'))
+        # qp.drawPolygon(p1)
 
-        qp.setBrush(QtGui.QColor('#023047'))
-        qp.drawPolygon(p2)
+
+        # p2 = QtGui.QPolygonF()
+        # p2.append(QtCore.QPointF(490, 200))  
+        # p2.append(QtCore.QPointF(600, 130))
+        # p2.append(QtCore.QPointF(800, 300))
+        # p2.append(QtCore.QPointF(700, 500))
+
+        # qp.setBrush(QtGui.QColor('#023047'))
+        # qp.drawPolygon(p2)
 
         
-        p3 = QtGui.QPolygonF()
-        p3.append(QtCore.QPointF(30, 60))  
-        p3.append(QtCore.QPointF(40, 80))  
-        p3.append(QtCore.QPointF(50, 60))  
-        p3.append(QtCore.QPointF(40, 50))
+        # p3 = QtGui.QPolygonF()
+        # p3.append(QtCore.QPointF(30, 60))  
+        # p3.append(QtCore.QPointF(40, 80))  
+        # p3.append(QtCore.QPointF(50, 60))  
+        # p3.append(QtCore.QPointF(40, 50))
 
-        qp.setBrush(QtGui.QColor('#023047')) 
-        qp.drawPolygon(p3)
+        # qp.setBrush(QtGui.QColor('#023047')) 
+        # qp.drawPolygon(p3)
 
         s = self.robot_pic.size()/2
         x_pos = int(10 + x * 1000 - s.width() / 2)

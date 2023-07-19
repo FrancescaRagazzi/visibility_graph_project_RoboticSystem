@@ -222,15 +222,25 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Visualizza il grafico del robot prima dell'avvio dell'app
-    robot.visualize()
+   # robot.visualize()
 
     # Crea e avvia l'app
     cart_robot = Cart2DRobot(direction_change_points)
     ex = MyCartWindow(cart_robot)
+    obstacles = [
+        [(190, 260), (100, 350), (250, 400)],  
+        [(490, 200), (600, 130), (800, 300), (700, 500)],
+        [(30, 60), (40, 80), (50, 60), (40, 50)]
+    ]
+    ex.set_obstacles(obstacles)
+
     sys.exit(app.exec_())
 
-    
+
 # (290, 440)
 # (450, 160)
 # (540, 90)
-# (900, 50)
+# (900, 50)7
+
+
+
