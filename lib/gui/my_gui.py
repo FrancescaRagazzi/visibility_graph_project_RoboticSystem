@@ -98,43 +98,6 @@ class MyCartWindow(QWidget):
         for polygon in self.obstacles_polygons:
             qp.drawPolygon(polygon)
 
-        # if self.obstacles is not None:
-        #     for obstacle in self.obstacles:
-        #         p = QtGui.QPolygonF()
-        #         for point in obstacle:
-        #             p.append(QtCore.QPointF(point[0], point[1]))
-        #         qp.setBrush(QtGui.QColor('#023047'))
-        #         qp.drawPolygon(p)
-
-
-        # #Disegno gli ostacoli
-        # p1 = QtGui.QPolygonF()
-        # p1.append(QtCore.QPointF(190, 260))  
-        # p1.append(QtCore.QPointF(100, 350))  
-        # p1.append(QtCore.QPointF(250, 400))  
-        # qp.setBrush(QtGui.QColor('#023047'))
-        # qp.drawPolygon(p1)
-
-
-        # p2 = QtGui.QPolygonF()
-        # p2.append(QtCore.QPointF(490, 200))  
-        # p2.append(QtCore.QPointF(600, 130))
-        # p2.append(QtCore.QPointF(800, 300))
-        # p2.append(QtCore.QPointF(700, 500))
-
-        # qp.setBrush(QtGui.QColor('#023047'))
-        # qp.drawPolygon(p2)
-
-        
-        # p3 = QtGui.QPolygonF()
-        # p3.append(QtCore.QPointF(30, 60))  
-        # p3.append(QtCore.QPointF(40, 80))  
-        # p3.append(QtCore.QPointF(50, 60))  
-        # p3.append(QtCore.QPointF(40, 50))
-
-        # qp.setBrush(QtGui.QColor('#023047')) 
-        # qp.drawPolygon(p3)
-
         s = self.robot_pic.size()/2
         x_pos = int(10 + x * 1000 - s.width() / 2)
         y_pos = int(500 - y * 1000 - s.height() / 2)

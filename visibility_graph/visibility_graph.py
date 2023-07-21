@@ -50,12 +50,6 @@ class VisibilityGraph:
         return edges
 
 
-    def is_inside_obstacle(self, point1):
-        for obstacle in self.environment.obstacles:
-            if obstacle.is_inside(point1):
-                return True
-        return False
-
     def can_connect(self, point1, point2):
         if not self.environment.is_valid_point(point1) or not self.environment.is_valid_point(point2):
             return False
