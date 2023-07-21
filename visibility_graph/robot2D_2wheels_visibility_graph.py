@@ -46,21 +46,10 @@ class Cart2DRobot(RoboticSystem):
             print(converted_point)
 
         self.path_controller.set_path(converted_path)
-
-    
-        # self.path_controller.set_path([ (0.29, 0.5-0.44),
-        #                                 (0.45,0.5-0.16),
-        #                                 (0.54,0.5-0.09), 
-        #                                 (0.9, 0.5 - 0.05)])
       
         (x, y, _) = self.get_pose()
-        self.path_controller.start((x, y)) # avviamo il path a partire dalla posizione corrente del robot
-        
+        self.path_controller.start((x, y)) 
         self.plotter = DataPlotter()
-
-        
-    
-        
 
 
     def run(self):
@@ -100,12 +89,5 @@ class Cart2DRobot(RoboticSystem):
 
     def get_speed(self):
         return self.cart.v, self.cart.w
-
-
-xpath = [(290, 440),
-        (450, 160),
-        (540, 90),
-        (900, 50)]
-
 
 
