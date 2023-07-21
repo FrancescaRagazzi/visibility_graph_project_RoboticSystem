@@ -178,25 +178,6 @@ class VisibilityGraph:
         plt.legend()
         plt.show()
 
-
-def get_direction_change_points(fastest_path):
-    direction_change_points = []
-    if len(fastest_path) < 3:
-        return direction_change_points
-
-    for i in range(1, len(fastest_path) - 1):
-        x1, y1 = fastest_path[i - 1]
-        x2, y2 = fastest_path[i]
-        x3, y3 = fastest_path[i + 1]
-
-        if (x2 - x1, y2 - y1) != (x3 - x2, y3 - y2):
-            direction_change_points.append(fastest_path[i])
-
-    direction_change_points.append(robot.goal)
-
-    return direction_change_points
-
-
 env = Environment(1000, 600)
 
 obstacles = [
@@ -213,13 +194,9 @@ robot = VisibilityGraph(env, (100, 500), (900, 50))
 robot.find_paths()
 
 
-direction_change_points = get_direction_change_points(robot.fastest_path)
-
 print("Punti di cambio direzione:")
-for point in direction_change_points:
+for point in robot.fastest_path:
     print(point)
-
-
 
 scale_factor = 0.8
 scaled_obstacles = []
@@ -234,7 +211,7 @@ if __name__ == '__main__':
     robot.visualize()
 
     # Crea e avvia l'app
-    cart_robot = Cart2DRobot(direction_change_points)
+    cart_robot = Cart2DRobot(robot.fastest_path)
     ex = MyCartWindow(cart_robot)
     ex.set_obstacles(scaled_obstacles)
 
