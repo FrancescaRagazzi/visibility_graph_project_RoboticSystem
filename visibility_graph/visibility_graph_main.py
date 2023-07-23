@@ -18,7 +18,7 @@ from lib.models.obstacle import scale_polygon
 
 env = Environment(1000, 600)
 
-obstacles = [ # 
+obstacles = [
     Obstacle([(190, 260), (100, 350), (290, 440)]),
     Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)]),
     Obstacle([(700,50), (770,100), (800,20)])
