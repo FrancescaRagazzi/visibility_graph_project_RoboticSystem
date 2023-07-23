@@ -24,7 +24,6 @@ class VisibilityGraph:
                 if self.can_connect(point1, point2):
                     edges.append((point1, point2))
 
-        # Aggiungi gli archi tra i vertici dell'ostacolo stesso
         for obstacle in self.environment.obstacles:
             vertices = obstacle.vertices
             num_vertices = len(vertices)
@@ -40,8 +39,6 @@ class VisibilityGraph:
         if not self.environment.is_valid_point(point1) or not self.environment.is_valid_point(point2):
             return False
 
-        if self.environment.is_in_obstacle(point1) or self.environment.is_in_obstacle(point2):
-            return False
 
         x1, y1 = point1
         x2, y2 = point2
