@@ -28,10 +28,10 @@ obstacles = [
 for obstacle in obstacles:
     env.add_obstacle(obstacle)
 
-robot = VisibilityGraph(env, (100, 500), (900, 50))
-robot.find_paths()
+visibility = VisibilityGraph(env, (100, 500), (900, 50))
+visibility.find_paths()
 
-for point in robot.fastest_path:
+for point in visibility.fastest_path:
     print(point)
 
 scale_factor = 0.8
@@ -42,8 +42,8 @@ for obstacle in obstacles:
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    robot.visualize()
-    cart_robot = Cart2DRobot(robot.fastest_path)
+    visibility.visualize()
+    cart_robot = Cart2DRobot(visibility.fastest_path)
     ex = MyCartWindow(cart_robot)
     ex.set_obstacles(scaled_obstacles)
 
