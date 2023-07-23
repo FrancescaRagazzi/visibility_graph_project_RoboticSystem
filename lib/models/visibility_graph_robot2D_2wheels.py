@@ -33,7 +33,7 @@ class Cart2DRobot(RoboticSystem):
         self.left_controller = PIDSat(8.0, 3.0, 0.0, 5, True)
         self.right_controller = PIDSat(8.0, 3.0, 0.0, 5, True)
 
-        self.polar_controller = Polar2DController(2.5, 2, 2.0 , 2)
+        self.polar_controller = Polar2DController(2.5, 2, 2.0 , 2) #KP_linear, v_max, KP_heading, w_max
         
         self.path_controller = Path2D(0.2, 0.5, 0.5, 0.01)  # _vmax, _acc, _dec, _threshold
         converted_path = []

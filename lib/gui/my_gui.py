@@ -61,7 +61,7 @@ class MyCartWindow(QWidget):
 
     def set_obstacles(self, obstacles):
         self.obstacles = obstacles
-        self.obstacles_polygons = []  # Converti gli ostacoli in QPolygonF
+        self.obstacles_polygons = []  
 
         if self.obstacles is not None:
             for obstacle in self.obstacles:
@@ -75,7 +75,7 @@ class MyCartWindow(QWidget):
     def go(self):
         if not (self.compound_system.step()):
             self._timer_painter.stop()
-        self.update()  # repaint window
+        self.update()  
 
     def paintEvent(self, event):
         qp = QtGui.QPainter()

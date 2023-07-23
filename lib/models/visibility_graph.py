@@ -1,32 +1,18 @@
-
-import sys
-from pathlib import Path
 import math
 import heapq
-import matplotlib.pyplot as plt
 from queue import PriorityQueue
-
-CURRENT_POSITION = Path(__file__).parent
-sys.path.append(f"{CURRENT_POSITION}/../")
-
-#import new classes 
-from lib.models.environment import Environment
-from lib.models.obstacle import Obstacle
-from robot2D_2wheels_visibility_graph import *
-
-from lib.models.obstacle import scale_polygon
-
+import matplotlib.pyplot as plt
 
 class VisibilityGraph:
-    def __init__(self, environment, start, goal):
+    def __init__(self, environment, start, target):
         self.environment = environment
         self.start = start
-        self.goal = goal
+        self.target = target
         self.paths = []
         self.fastest_path = []
 
     def visibility_graph(self):
-        points = [self.start, self.goal]
+        points = [self.start, self.target]
         for obstacle in self.environment.obstacles:
             points.extend(obstacle.vertices)
 
@@ -93,7 +79,7 @@ class VisibilityGraph:
         while stack:
             current_node, path = stack.pop()
 
-            if current_node == self.goal:
+            if current_node == self.target:
                 possible_paths.append(path)
                 continue
 
@@ -114,7 +100,7 @@ class VisibilityGraph:
 
         while not queue.empty():
             dist, current_node = queue.get()
-            if current_node == self.goal:
+            if current_node == self.target:
                 break
             if dist > distances[current_node]:
                 continue
@@ -125,9 +111,9 @@ class VisibilityGraph:
                     previous[neighbor] = current_node
                     queue.put((new_dist, neighbor))
 
-        # Costruzione del percorso dal goal al punto di partenza
+        # Costruzione del percorso dal target al punto di partenza
         path = []
-        current_node = self.goal
+        current_node = self.target
         while current_node != self.start:
             path.append(current_node)
             current_node = previous[current_node]
@@ -164,53 +150,10 @@ class VisibilityGraph:
         plt.plot(*zip(*self.fastest_path), "#e63946", linewidth=3)
 
         plt.plot(self.start[0], self.start[1], "bo", label="Punto di partenza", color="#d62828")
-        plt.plot(self.goal[0], self.goal[1], "ro", label="Punto di arrivo", color="#003049")
+        plt.plot(self.target[0], self.target[1], "ro", label="Punto di arrivo", color="#003049")
 
         plt.xlim(0, self.environment.width)
         plt.ylim(self.environment.height, 0)  # Inverti l'orientamento dell'asse y
         plt.gca().set_aspect("equal", adjustable="box")
         plt.legend()
         plt.show()
-
-env = Environment(1000, 600)
-
-obstacles = [
-    Obstacle([(190, 260), (100, 350), (290, 440)]),
-    Obstacle([(450, 160), (540, 90), (840, 340), (740, 540)]),
-    Obstacle([(700,50), (770,100), (800,20)])
-]
-
-
-for obstacle in obstacles:
-    env.add_obstacle(obstacle)
-
-robot = VisibilityGraph(env, (100, 500), (900, 50))
-robot.find_paths()
-
-
-print("Punti di cambio direzione:")
-for point in robot.fastest_path:
-    print(point)
-
-scale_factor = 0.8
-scaled_obstacles = []
-for obstacle in obstacles:
-    scaled_obstacles.append(obstacle.scale(scale_factor))
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    # Visualizza il grafico del robot prima dell'avvio dell'app
-    robot.visualize()
-
-    # Crea e avvia l'app
-    cart_robot = Cart2DRobot(robot.fastest_path)
-    ex = MyCartWindow(cart_robot)
-    ex.set_obstacles(scaled_obstacles)
-
-    sys.exit(app.exec_())
-
-
-
-
