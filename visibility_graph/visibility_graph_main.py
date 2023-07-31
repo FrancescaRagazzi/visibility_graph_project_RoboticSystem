@@ -28,6 +28,7 @@ for obstacle in obstacles:
 
 visibility = VisibilityGraph(env, (100, 500), (900, 50)) 
 
+
 visibility.find_fastest_path()
 
 for point in visibility.fastest_path:
@@ -74,7 +75,7 @@ if __name__ == '__main__':
 #third
 # obstacles = [
 #     Obstacle([(100, 100), (100, 600), (300, 600),(300,100)]),
-#     Obstacle([(600,0), (600, 400), (800,400),(800,0)]),
+#     Obstacle([(600,0), (600, 400), (800,400),(800,0)])
 # ]
 
 # for obstacle in obstacles:

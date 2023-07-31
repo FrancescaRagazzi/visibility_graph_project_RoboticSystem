@@ -82,6 +82,8 @@ class MyCart2D(RoboticSystem):
         # robot model
         self.cart.evaluate(self.delta_t, Tleft, Tright)
 
+
+
         return True
 
     def get_pose(self):
@@ -89,5 +91,45 @@ class MyCart2D(RoboticSystem):
 
     def get_speed(self):
         return self.cart.v, self.cart.w
+
+
+
+
+
+
+
+
+
+
+
+
+    # self.plotter.add( 't', self.t)
+    # self.plotter.add( 'vl', vl)
+    # self.plotter.add( 'vr', vr)
+    # self.plotter.add( 'vref_l', vref_l)
+    # self.plotter.add( 'vref_r', vref_r)
+    # if self.t > 6:
+    #     self.plotter.plot( ['t', 'time'] , [ [ 'vref_l', 'Vref' ],
+    #                                          [ 'vl', 'VL' ] ])
+    #     self.plotter.plot( ['t', 'time'] , [ [ 'vref_r', 'Vref' ],
+    #                                          [ 'vr', 'VR' ] ])
+    #     self.plotter.show()
+    #     return False
+    # else:
+    #     return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
