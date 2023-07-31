@@ -134,8 +134,8 @@ class VisibilityGraph:
             plt.fill(xs, ys, "#023047")
 
         
-        for edge in self.edges:
-            plt.plot(*zip(*edge),  "#ffb703", linewidth=0.8, linestyle="dashed")
+        # for edge in self.edges:
+        #     plt.plot(*zip(*edge),  "#ffb703", linewidth=0.8, linestyle="dashed")
 
         # Visualizzazione del percorso più veloce
         plt.plot(*zip(*self.fastest_path), "#e63946", linewidth=3)
