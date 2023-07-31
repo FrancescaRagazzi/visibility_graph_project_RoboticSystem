@@ -90,8 +90,7 @@ class MyCartWindow(QWidget):
 
         qp.drawText(910, 20, "X  = %6.3f m" % (x))
         qp.drawText(910, 40, "Y  = %6.3f m" % (y))
-        qp.drawText(910, 60, "Th = %6.3f deg" % (math.degrees(theta)))
-        qp.drawText(910, 80, "T  = %6.3f s" % (self.compound_system.t))
+
 
         # Disegno degli ostacoli
         qp.setBrush(QtGui.QColor('#023047'))
