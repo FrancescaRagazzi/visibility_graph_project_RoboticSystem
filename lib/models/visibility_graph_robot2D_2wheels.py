@@ -30,8 +30,8 @@ class MyCart2D(RoboticSystem):
                                                     0.025, 0.025, 0.2,
                                                     0.02, 0.02, 0.24, 2*math.pi/4000.0)
 
-        self.left_controller = PIDSat(8.0, 3.0, 0.0, 5, True)
-        self.right_controller = PIDSat(8.0, 3.0, 0.0, 5, True)
+        self.left_controller = PIDSat(6.0, 4.0, 0.0, 0.2, True) #(8.0, 3.0, 0.0, 5, True)
+        self.right_controller = PIDSat(6.0, 4.0, 0.0, 0.2, True)
 
         self.polar_controller = Polar2DController(2.5, 2, 2.0 , 2) #KP_linear, v_max, KP_heading, w_max
         

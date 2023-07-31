@@ -8,8 +8,8 @@ class VisibilityGraph:
         self.environment = environment
         self.start = start
         self.target = target
-        self.paths = []
         self.fastest_path = []
+        self.edges = []
 
     def visibility_graph(self):
         points = [self.start, self.target]
@@ -31,6 +31,7 @@ class VisibilityGraph:
                 point2 = points[j]
                 if self.can_connect(point1, point2):
                     edges.append((point1, point2))
+                    #print ("edge " , j , " (", point1, " , ", point2, ")" )
 
         for obstacle in self.environment.obstacles:
             vertices = obstacle.vertices
@@ -40,14 +41,19 @@ class VisibilityGraph:
                 point2 = vertices[(i + 1) % num_vertices]
                 edges.append((point1, point2))
                 print("edge " , point1, " ", point2)
+                
+        self.edges = edges
 
-        return edges
-
+        return 
 
     def can_connect(self, point1, point2):
-        if not self.environment.is_valid_point(point1) or not self.environment.is_valid_point(point2):
+        if not self.environment.is_valid_point(point1):
+            #print ("Invalid edge " ,  point1)
             return False
-
+        
+        if not self.environment.is_valid_point(point2):
+            #print ("Invalid edge " ,  point2)
+            return False
 
         x1, y1 = point1
         x2, y2 = point2
@@ -67,10 +73,10 @@ class VisibilityGraph:
 
         return True
 
-    def find_paths(self):
-        edges = self.visibility_graph()
+    def find_fastest_path(self):
+        self.visibility_graph()
         graph = {}
-        for edge in edges:
+        for edge in self.edges:
             point1, point2 = edge
             if point1 not in graph:
                 graph[point1] = []
@@ -79,24 +85,6 @@ class VisibilityGraph:
             graph[point1].append(point2)
             graph[point2].append(point1)
 
-        stack = [(self.start, [self.start])]
-        possible_paths = []
-
-        while stack:
-            current_node, path = stack.pop()
-
-            if current_node == self.target:
-                possible_paths.append(path)
-                continue
-
-            for neighbor in graph[current_node]:
-                if neighbor not in path and not self.environment.is_in_obstacle(neighbor):
-                    stack.append((neighbor, path + [neighbor]))
-
-        self.paths = possible_paths
-        self.find_fastest_path(graph)
-
-    def find_fastest_path(self, graph):
         distances = {point: math.inf for point in graph}
         distances[self.start] = 0
         previous = {point: None for point in graph}
@@ -128,17 +116,16 @@ class VisibilityGraph:
 
         self.fastest_path = path
 
-    
     def distance(self, point1, point2):
         x1, y1 = point1
         x2, y2 = point2
         return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-
     def visualize(self):
-        if not self.paths:
-            print("Calcola prima i percorsi!")
+        if not self.fastest_path:
+            print("Calcola prima il percorso più veloce!")
             return
+        
 
         plt.figure(figsize=(10, 6))
         for obstacle in self.environment.obstacles:
@@ -146,11 +133,9 @@ class VisibilityGraph:
             xs, ys = zip(*vertices)
             plt.fill(xs, ys, "#023047")
 
-        # Visualizzazione delle traiettorie possibili
-        for path in self.paths:
-            if self.start in path:
-                start_idx = path.index(self.start)
-                plt.plot(*zip(*path[start_idx:]), "#ffb703", linewidth=0.5, linestyle="dashed")
+        
+        for edge in self.edges:
+            plt.plot(*zip(*edge),  "#ffb703", linewidth=0.8, linestyle="dashed")
 
         # Visualizzazione del percorso più veloce
         plt.plot(*zip(*self.fastest_path), "#e63946", linewidth=3)
