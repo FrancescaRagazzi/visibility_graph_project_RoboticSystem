@@ -13,6 +13,14 @@ class VisibilityGraph:
 
     def visibility_graph(self):
         points = [self.start, self.target]
+        if not self.environment.is_valid_point(self.start):
+            print("Start is not a valid point")
+            return False
+
+        if not self.environment.is_valid_point(self.target):
+            print("Target is not a valid point")
+            return False
+        
         for obstacle in self.environment.obstacles:
             points.extend(obstacle.vertices)
 
@@ -31,6 +39,7 @@ class VisibilityGraph:
                 point1 = vertices[i]
                 point2 = vertices[(i + 1) % num_vertices]
                 edges.append((point1, point2))
+                print("edge " , point1, " ", point2)
 
         return edges
 
