@@ -14,6 +14,8 @@ accuratamente la velocità del robot durante la navigazione, garantendo la stabi
 del percorso desiderato.
 
 
+![](path.jpg)
+
 
 
 
