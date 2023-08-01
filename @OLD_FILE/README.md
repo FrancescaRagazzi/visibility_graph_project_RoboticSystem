@@ -1,1 +1,0 @@
-# visibility_graph_project_RoboticSystem
