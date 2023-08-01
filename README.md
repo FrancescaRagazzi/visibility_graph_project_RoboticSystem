@@ -1,4 +1,4 @@
-#Visibility Graph
+# Visibility Graph
 
 Il Visibility Graph è un metodo ampiamente utilizzato per la pianificazione di percorsi in ambienti con
 ostacoli. Esso sfrutta la costruzione di un grafo, in cui i nodi rappresentano i punti critici dell'ambiente
